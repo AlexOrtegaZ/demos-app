@@ -26,10 +26,13 @@ import 'package:demos_app/modules/proposals/pages/proposal_comments/services/com
 import 'package:demos_app/modules/proposals/pages/proposal_comments/services/comment_vote.service.dart';
 import 'package:demos_app/modules/proposals/pages/proposal_comments/widgets/buttons/reply_button.widget.dart';
 import 'package:demos_app/modules/proposals/pages/proposal_comments/widgets/comment_votes_count.widget.dart';
-import 'package:demos_app/modules/proposals/pages/proposal_comments/widgets/buttons/replies_count_button.widget.dart';
+import 'package:demos_app/modules/proposals/pages/proposal_comments/widgets/buttons/show_replies_button.widget.dart';
+import 'package:demos_app/modules/proposals/pages/proposal_comments/widgets/popup_comment_menu_options.widget.dart';
 import 'package:demos_app/modules/proposals/pages/proposal_comments/widgets/replies_list_view.widget.dart';
 import 'package:demos_app/modules/spaces/pages/space_details/bloc/space.bloc.dart';
+import 'package:demos_app/modules/spaces/validators/is_current_member.widget_validator.dart';
 import 'package:demos_app/widgets/profile/profile_picture.widget.dart';
+import 'package:demos_app/widgets/wrappers/safe_widget/safe_widget_validator.dart';
 import 'package:expansion_widget/expansion_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -50,6 +53,7 @@ class MemberComment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final commentIsDeleted = comment.content == '' && comment.deleted;
     return Padding(
       padding: padding,
       child: ExpansionWidget(
@@ -60,12 +64,13 @@ class MemberComment extends StatelessWidget {
           children: [
             Row(
               children: [
-                 comment.member != null ?
-                ProfilePicture(
-                  imageKey: comment.member!.profilePictureKey,
-                  width: 40,
-                  percentage: 0.9,
-                ) : Container(),
+                comment.member != null
+                    ? ProfilePicture(
+                        imageKey: comment.member!.profilePictureKey,
+                        width: 40,
+                        percentage: 0.9,
+                      )
+                    : Container(),
                 const SizedBox(width: 10),
                 Text(
                   '${comment.member != null ? comment.member!.displayName : '[Miembro Eliminado]'} ',
@@ -77,7 +82,7 @@ class MemberComment extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 15),
-            Text(comment.content,
+            Text(commentIsDeleted ? '[Comentario Eliminado]' : comment.content,
                 style: TextStyle(color: Colors.grey.shade700)),
             const SizedBox(height: 10),
             Row(
@@ -86,21 +91,33 @@ class MemberComment extends StatelessWidget {
                 CommentVotesCount(
                   votesInFavor: comment.upVotesCount,
                   votesInOpposing: comment.downVotesCount,
-                  onUpvote: () => onVote(comment.manifestoCommentId, true),
-                  onDownvote: () => onVote(comment.manifestoCommentId, false),
+                  onUpvote: commentIsDeleted
+                      ? null
+                      : () => onVote(comment.manifestoCommentId, true),
+                  onDownvote: commentIsDeleted
+                      ? null
+                      : () => onVote(comment.manifestoCommentId, false),
                   currentUserCommentVote: getCurrentUserCommentVote(),
                 ),
                 const SizedBox(width: 10),
                 comment.repliesCount > 0 && enableReplies
-                    ? RepliesCountButton(
+                    ? ShowRepliesButton(
                         onTap: toggleFunction,
                         repliesCount: comment.repliesCount)
                     : Container(),
                 const SizedBox(width: 5),
-                enableReplies ? ReplyButton(onTap: onReplied) : Container(),
-                IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.more_vert, color: Colors.grey))
+                enableReplies && !commentIsDeleted
+                    ? ReplyButton(onTap: onReplied)
+                    : Container(),
+                commentIsDeleted
+                    ? Container()
+                    : SafeWidgetValidator(
+                        validators: [
+                          IsCurrentMemberWidgetValidator(
+                              comment.member!.memberId!)
+                        ],
+                        child: PopupCommentMenuOptions(comment: comment),
+                      )
               ],
             )
           ],
@@ -150,7 +167,7 @@ class MemberComment extends StatelessWidget {
     final commentView =
         await CommentViewService().getCommentById(manifestoCommentId);
 
-    CommentViewListBloc().add(CommentViewListUserVotedInComment(commentView!));
+    CommentViewListBloc().add(CommentViewListCommentUpdated(commentView!));
   }
 
   CurrentUserCommentVote getCurrentUserCommentVote() {

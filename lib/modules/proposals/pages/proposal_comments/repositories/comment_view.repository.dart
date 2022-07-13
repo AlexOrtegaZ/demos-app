@@ -33,13 +33,15 @@ class CommentViewRepository extends AppRepository {
   final colCreatedAt = ManifestoCommentRepository().colCreatedAt;
   final colCreatedByMember = ManifestoCommentRepository().colCreatedByMember;
   final colManifestoId = ManifestoCommentRepository().colManifestoId;
+  final colDeleted = ManifestoCommentRepository().colDeleted;
 
   String _getSelectQuery() => '''
     SELECT $colManifestoCommentId,
             $colContent,
             $colCreatedAt,
             $colCreatedByMember,
-            $colManifestoCommentParentId
+            $colManifestoCommentParentId,
+            $colDeleted
     FROM $tblManifestoComment
   ''';
 

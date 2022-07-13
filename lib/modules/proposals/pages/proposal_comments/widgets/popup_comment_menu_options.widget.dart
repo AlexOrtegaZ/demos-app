@@ -17,34 +17,23 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+import 'package:demos_app/modules/proposals/pages/proposal_comments/menu_options/delete_comment.menu_option.dart';
+import 'package:demos_app/modules/proposals/pages/proposal_comments/menu_options/update_comment.menu_option.dart';
+import 'package:demos_app/modules/proposals/pages/proposal_comments/models/comment_view.model.dart';
+import 'package:demos_app/widgets/general/popup_menu_options.widget.dart';
 import 'package:flutter/material.dart';
 
-class RepliesCountButton extends StatelessWidget {
-  final VoidCallback onTap;
-  final int repliesCount;
-  const RepliesCountButton(
-      {Key? key, required this.onTap, required this.repliesCount})
+class PopupCommentMenuOptions extends StatelessWidget {
+  final CommentView comment;
+
+  const PopupCommentMenuOptions({Key? key, required this.comment})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 5),
-        alignment: Alignment.center,
-        padding: const EdgeInsets.symmetric(horizontal: 5),
-        height: 20,
-        width: 90,
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.blue),
-          borderRadius: const BorderRadius.all(Radius.circular(5)),
-        ),
-        child: Text(
-          '$repliesCount respuestas',
-          style: const TextStyle(fontSize: 12, color: Colors.black),
-        ),
-      ),
-    );
+    return PopupMenuOptions(menuOptions: [
+      UpdateCommentMenuOption(comment),
+      DeleteCommentMenuOption(comment)
+    ]);
   }
 }

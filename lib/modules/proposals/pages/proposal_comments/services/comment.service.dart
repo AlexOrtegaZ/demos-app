@@ -52,6 +52,26 @@ class CommentService {
     return response.comment;
   }
 
+  Future<ManifestoComment> deleteComment(
+      String spaceId, String manifestoCommentId) async {
+    final response =
+        await CommentApi().deleteComment(spaceId, manifestoCommentId);
+
+    await _saveCommentResponseOnRepository(response);
+
+    return response.comment;
+  }
+
+  Future<ManifestoComment> updateComment(
+      String spaceId, String manifestoCommentId, String content) async {
+    final response =
+        await CommentApi().updateComment(spaceId, manifestoCommentId, content);
+
+    await _saveCommentResponseOnRepository(response);
+
+    return response.comment;
+  }
+
   Future<ManifestoComment?> getCommentFromLocalDb(
       String manifestoCommentId) async {
     return ManifestoCommentRepository().findById(manifestoCommentId);

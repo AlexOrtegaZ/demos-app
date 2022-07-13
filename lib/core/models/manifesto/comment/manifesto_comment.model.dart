@@ -17,6 +17,8 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+import 'package:demos_app/utils/parsers/parse_object_to_boolean.dart';
+
 class ManifestoComment {
   final String manifestoCommentId;
   final String content;
@@ -40,8 +42,10 @@ class ManifestoComment {
   factory ManifestoComment.fromObject(dynamic o) => ManifestoComment(
       o['manifestoCommentId'],
       o['content'],
-      o['manifestoCommentParentId'] == 'null' ? null : o['manifestoCommentParentId'],
-      o['deleted'] == 1 ? true : false,
+      o['manifestoCommentParentId'] == 'null'
+          ? null
+          : o['manifestoCommentParentId'],
+      parseObjectToBoolean(o['deleted']),
       o['createdAt'],
       o['createdByMember'],
       o['updatedAt'],

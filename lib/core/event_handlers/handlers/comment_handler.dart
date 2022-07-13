@@ -33,7 +33,10 @@ class CommentHandler extends EventHandlerMixin {
   String get key => 'comments';
 
   @override
-  final List<EventHandler> eventHandlers = [CommentPublishedHandler()];
+  final List<EventHandler> eventHandlers = [
+    CommentPublishedHandler(),
+    CommentUpdatedHandler()
+  ];
 }
 
 class CommentPublishedHandler implements EventHandler {
@@ -84,5 +87,26 @@ class CommentPublishedHandler implements EventHandler {
       CommentView commentView, String manifestoCommentParentId) {
     CommentViewListBloc()
         .add(CommentViewListUserReplied(commentView, manifestoCommentParentId));
+  }
+}
+
+class CommentUpdatedHandler implements EventHandler {
+  @override
+  String get key => 'updated';
+
+  @override
+  Future<void> handleEvent(Cache dataEvent) async {
+    final String spaceId = dataEvent.data!['spaceId'];
+    final String manifestoCommentId = dataEvent.data!['manifestoCommentId'];
+
+    final comment =
+        await CommentService().getComment(spaceId, manifestoCommentId);
+
+    final currentManifestoId = ProposalDetailsBloc().state?.manifestoId;
+    if (currentManifestoId == comment.manifestoId) {
+      final commentView =
+          await CommentViewService().getCommentById(comment.manifestoCommentId);
+      CommentViewListBloc().add(CommentViewListCommentUpdated(commentView!));
+    }
   }
 }

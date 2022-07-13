@@ -34,7 +34,7 @@ class CommentViewListBloc
     on<CommentViewListUserCommented>(_onUserCommeted);
     on<CommentViewListUserReplied>(_onUserReplied);
     on<CommentViewListEmpited>(_onEmpited);
-    on<CommentViewListUserVotedInComment>(_onUserVotedInComment);
+    on<CommentViewListCommentUpdated>(_onCommentUpdated);
   }
 
   void _onListLoaded(
@@ -83,7 +83,7 @@ class CommentViewListBloc
     }
   }
 
-  void _onUserVotedInComment(CommentViewListUserVotedInComment event,
+  void _onCommentUpdated(CommentViewListCommentUpdated event,
       Emitter<CommentViewListState> emit) async {
     if (state is CommentViewListWithData) {
       final List<CommentView> commentViews =

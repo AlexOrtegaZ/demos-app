@@ -81,5 +81,5 @@ Future<void> _handleCommentVoteUpdate(Cache dataEvent) async {
   final commentView =
       await CommentViewService().getCommentById(commentVote.manifestoCommentId);
 
-  CommentViewListBloc().add(CommentViewListUserVotedInComment(commentView!));
+  CommentViewListBloc().add(CommentViewListCommentUpdated(commentView!));
 }

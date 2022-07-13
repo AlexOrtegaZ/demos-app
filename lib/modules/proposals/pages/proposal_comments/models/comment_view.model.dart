@@ -29,6 +29,7 @@ class CommentView {
   final List<ManifestoCommentVote> votes;
   final MemberView? member;
   final List<CommentView>? replies;
+  final bool deleted;
 
   String get createdAtFormatted =>
       DateFormatterService.parseToDayMonthYearHourDate(createdAt);
@@ -47,6 +48,7 @@ class CommentView {
     this.votes,
     this.member,
     this.replies,
+    this.deleted,
   );
 
   factory CommentView.fromObjectAndParams(dynamic o, List<CommentView>? replies,
@@ -59,5 +61,6 @@ class CommentView {
         votes,
         member,
         replies,
+        o['deleted'] == 1 ? true : false,
       );
 }
