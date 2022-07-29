@@ -17,6 +17,7 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+import 'package:demos_app/config/themes/main_theme.dart';
 import 'package:flutter/material.dart';
 
 class InformationTile extends StatelessWidget {
@@ -41,9 +42,16 @@ class InformationTile extends StatelessWidget {
         leading: picture,
         title: Text(
           name,
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+            color: primaryColor,
+          ),
         ),
-        subtitle: Text(subtitle),
+        subtitle: Text(
+          subtitle,
+          style: const TextStyle(color: primaryColorLight),
+        ),
         visualDensity:
             const VisualDensity(vertical: VisualDensity.maximumDensity),
         minVerticalPadding: 16,

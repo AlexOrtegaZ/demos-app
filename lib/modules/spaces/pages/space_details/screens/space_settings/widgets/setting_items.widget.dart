@@ -27,12 +27,14 @@ class SettingItem extends StatelessWidget {
     required this.icon,
     required this.onTap,
     this.color,
+    this.colorTitle,
   }) : super(key: key);
 
   final String title;
   final String subtitle;
   final IconData icon;
   final Color? color;
+  final Color? colorTitle;
   final VoidCallback onTap;
 
   @override
@@ -43,14 +45,14 @@ class SettingItem extends StatelessWidget {
         leading: Icon(icon, size: 32, color: color),
         title: Text(
           title,
-          style: TextStyle(fontSize: 18, color: color),
+          style: TextStyle(fontSize: 18, color: colorTitle),
         ),
         subtitle: Text(
           subtitle,
-          style: TextStyle(fontSize: 12, color: color),
+          style: TextStyle(fontSize: 14, color: color),
         ),
         onTap: onTap,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 28),
+        // contentPadding: const EdgeInsets.symmetric(horizontal: 28),
         horizontalTitleGap: 8,
         dense: true,
       ),

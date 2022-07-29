@@ -18,6 +18,8 @@
 */
 
 import 'dart:io';
+import 'package:demos_app/config/custom-icons/demos_icons_icons.dart';
+import 'package:demos_app/config/themes/main_theme.dart';
 import 'package:demos_app/modules/spaces/models/space_view.model.dart';
 import 'package:demos_app/modules/spaces/pages/new_space/services/new_space.service.dart';
 import 'package:demos_app/modules/spaces/pages/space_details/screens/edit_space/widgets/space_field.widget.dart';
@@ -25,6 +27,7 @@ import 'package:demos_app/modules/spaces/pages/space_details/services/space_deta
 import 'package:demos_app/modules/spaces/pages/space_details/bloc/space.bloc.dart';
 import 'package:demos_app/modules/spaces/validators/is_current_user_admin.widget_validator.dart';
 import 'package:demos_app/utils/ui/modals/open_update_string_field_modal.dart';
+import 'package:demos_app/widgets/general/card.widget.dart';
 import 'package:demos_app/widgets/pages/image_editor.page.dart';
 import 'package:demos_app/widgets/space/space_picture.widget.dart';
 import 'package:demos_app/widgets/wrappers/safe_widget/safe_widget_validator.dart';
@@ -45,49 +48,63 @@ class _EditSpaceScreenState extends State<EditSpaceScreen> {
       bloc: SpaceBloc(),
       builder: (context, space) {
         return Scaffold(
+          backgroundColor: primaryColor,
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
             title: const Text('Espacio'),
           ),
           body: Column(
             children: [
-              Container(
-                margin: const EdgeInsets.symmetric(vertical: 24),
-                child: Stack(
-                  children: [
-                    SpacePicture(
-                      width: 164,
+              Stack(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    child: SpacePicture(
+                      width: 180,
                       pictureKey: space.pictureKey,
                     ),
-                    SafeWidgetValidator(
-                      validators: [IsCurrentUserAdminWidgetValidator()],
-                      child: Positioned(
-                        right: 0,
-                        bottom: 0,
-                        child: FloatingActionButton(
-                          onPressed: () {
-                            onPictureEditPress(space);
-                          },
-                          mini: true,
-                          child: const Icon(Icons.photo_camera),
+                  ),
+                  SafeWidgetValidator(
+                    validators: [IsCurrentUserAdminWidgetValidator()],
+                    child: Positioned(
+                      right: 0,
+                      bottom: 0,
+                      child: FloatingActionButton(
+                        onPressed: () => onPictureEditPress(space),
+                        child: const Icon(
+                          DemosIcons.camera,
+                          color: primaryColor,
+                          size: 32,
                         ),
                       ),
-                    )
-                  ],
+                    ),
+                  )
+                ],
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      bottom: 64, right: 16, left: 16, top: 16),
+                  child: CardWidget(
+                    child: Column(
+                      children: [
+                        SpaceField(
+                          title: 'Nombre',
+                          subtitle: space.name,
+                          icon: DemosIcons.building,
+                          onEdit: () => updateSpaceName(space),
+                        ),
+                        SpaceField(
+                          title: 'Descripción',
+                          subtitle: space.description ?? 'Sin descripcion',
+                          icon: DemosIcons.info_outlined,
+                          onEdit: () => updateSpaceDescription(space),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
-              SpaceField(
-                title: 'Nombre',
-                subtitle: space.name,
-                icon: Icons.business,
-                onEdit: () => updateSpaceName(space),
-              ),
-              SpaceField(
-                title: 'Descripción',
-                subtitle: space.description ?? 'Sin descripcion',
-                icon: Icons.info_outline,
-                onEdit: () => updateSpaceDescription(space),
-              )
             ],
           ),
         );
@@ -113,9 +130,7 @@ class _EditSpaceScreenState extends State<EditSpaceScreen> {
       hintText: 'Introduce un nuevo nombre',
       initialValue: space.name,
     );
-    if (newName != null &&
-        newName.isNotEmpty &&
-        newName != space.name) {
+    if (newName != null && newName.isNotEmpty && newName != space.name) {
       SpaceDetailsService().updateName(space.spaceId!, newName);
     }
   }

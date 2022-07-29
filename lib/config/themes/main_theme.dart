@@ -21,33 +21,33 @@
 
 import 'package:flutter/material.dart';
 
-const Color primaryColor =  Color(0xFF000033);
-final Color primaryColorDark = const Color(0xFF3B4879);
-final Color primaryColorLight = const Color(0xFFB6BACE);
+const Color primaryColor = Color(0xFF000033);
+const Color primaryColorDark = const Color(0xFF3B4879);
+const Color primaryColorLight = Color(0xFFB6BACE);
 final Color secondaryColor = const Color(0xFFFFCC00);
-const Color  secondaryColorDark =  Color(0xFFFF9900);
+const Color secondaryColorDark = Color(0xFFFF9900);
 final Color secondaryColorLight = const Color(0xFFFFDF81);
 
 final mainTheme = ThemeData(
-  primaryColor: primaryColor,
-  primaryColorDark: primaryColorDark,
-  primaryColorLight: primaryColorLight,
-  fontFamily: 'Montserrat',
-  tabBarTheme: ThemeData.light().tabBarTheme.copyWith(labelColor: Colors.white),
-  appBarTheme: ThemeData.light().appBarTheme.copyWith(
-      backgroundColor: primaryColor,
-      elevation: 0,
-      iconTheme: const IconThemeData(color: Colors.white),
-      titleTextStyle: const TextStyle(color: Colors.white, fontSize: 20.0)),
-  textTheme: const TextTheme(
-    caption: TextStyle(fontSize: 16.0),
-    headline1: TextStyle(fontSize: 36.0, fontWeight: FontWeight.bold),
-    headline6: TextStyle(fontSize: 20.0, fontStyle: FontStyle.italic),
-    bodyText2: TextStyle(fontSize: 16.0),
-  ),
-  colorScheme: ThemeData().colorScheme.copyWith(
-    primary: primaryColor,
-    secondary: secondaryColor,
-    secondaryContainer: secondaryColorDark,
-  )
-);
+    primaryColor: primaryColor,
+    primaryColorDark: primaryColorDark,
+    primaryColorLight: primaryColorLight,
+    fontFamily: 'Montserrat',
+    tabBarTheme:
+        ThemeData.light().tabBarTheme.copyWith(labelColor: Colors.white),
+    appBarTheme: ThemeData.light().appBarTheme.copyWith(
+        backgroundColor: primaryColor,
+        elevation: 0,
+        iconTheme: const IconThemeData(color: Colors.white),
+        titleTextStyle: const TextStyle(color: Colors.white, fontSize: 20.0)),
+    textTheme: const TextTheme(
+      caption: TextStyle(fontSize: 16.0),
+      headline1: TextStyle(fontSize: 36.0, fontWeight: FontWeight.bold),
+      headline6: TextStyle(fontSize: 20.0, fontStyle: FontStyle.italic),
+      bodyText2: TextStyle(fontSize: 16.0),
+    ),
+    colorScheme: ThemeData().colorScheme.copyWith(
+          primary: primaryColor,
+          secondary: secondaryColor,
+          secondaryContainer: secondaryColorDark,
+        ));

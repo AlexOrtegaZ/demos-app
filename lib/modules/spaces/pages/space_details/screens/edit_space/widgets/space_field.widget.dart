@@ -17,6 +17,8 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+import 'package:demos_app/config/custom-icons/demos_icons_icons.dart';
+import 'package:demos_app/config/themes/main_theme.dart';
 import 'package:demos_app/modules/spaces/validators/is_current_user_admin.widget_validator.dart';
 import 'package:demos_app/widgets/wrappers/safe_widget/safe_widget_validator.dart';
 import 'package:flutter/material.dart';
@@ -38,32 +40,45 @@ class SpaceField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       child: ListTile(
         title: Text(
           title,
-          style: const TextStyle(fontSize: 14, color: Colors.grey),
+          style: const TextStyle(
+            fontSize: 14,
+            color: primaryColorLight,
+          ),
         ),
         subtitle: Text(
           subtitle,
           style: const TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w400,
-            color: Colors.black,
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+            color: primaryColor,
           ),
         ),
         leading: Icon(
           icon,
-          size: 30,
+          size: 36,
+          color: primaryColorLight,
         ),
         trailing: SafeWidgetValidator(
           validators: [IsCurrentUserAdminWidgetValidator()],
           child: IconButton(
-            icon: const Icon(Icons.edit, color: Colors.blue),
+            icon: const Icon(
+              DemosIcons.pencil,
+              color: secondaryColorDark,
+            ),
             onPressed: onEdit,
           ),
         ),
         horizontalTitleGap: 6,
+        shape: const Border(
+          bottom: BorderSide(
+            color: primaryColorLight,
+            width: 0.2,
+          ),
+        ),
       ),
     );
   }

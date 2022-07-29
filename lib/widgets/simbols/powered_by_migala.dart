@@ -27,18 +27,31 @@ class PoweredByMigala extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          margin: const EdgeInsets.only(right: 16),
-          child: Column(
+          margin: const EdgeInsets.only(bottom: 16),
+          child: Row(
             children: const [
               Text(
                 'powered by',
-                style: TextStyle(fontWeight: FontWeight.w300),
+                style: TextStyle(
+                  fontWeight: FontWeight.w300,
+                  color: Colors.white,
+                ),
               ),
-              Text('Migala',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold))
+              Padding(
+                padding: EdgeInsets.only(left: 4),
+                child: Text(
+                  'Migala',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+              )
             ],
           ),
         ),
